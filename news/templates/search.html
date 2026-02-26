@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 50px auto; padding: 0 20px; display:flex; gap:30px;">
+
+    <!-- Search natijalari (chap / markaz) -->
+    <div style="flex:3; display:flex; flex-direction:column; gap:20px;">
+        <h1>Qidiruv natijasi: </h1>
+        {% if news_list %}
+            {% for news in news_list %}
+                <div style="display: flex; background:#fff; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+
+                    <!-- Rasm o'ngda -->
+                    {% if news.image %}
+                        <img src="{{ news.image.url }}" alt="{{ news.title }}" style="width:200px; object-fit:cover;">
+                    {% endif %}
+
+                    <!-- Matn chapda -->
+                    <div style="flex:1; padding:15px; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <a href="{% url 'news_detail' news.id %}" style="font-size:18px; font-weight:bold; color:#0d47a1; text-decoration:none;">
+                                {{ news.title }}
+                            </a>
+                            <p style="margin-top:10px; color:#555; font-size:14px;">
+                                {{ news.description|truncatewords:30 }}
+                            </p>
+                        </div>
+                        <div style="font-size:12px; color:#888;">
+                            Published: {{ news.published|date:"d M Y" }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found for "<strong>{{ request.GET.q }}</strong>".</p>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar (o'ng) -->
+    <aside class="sidebar">
+        <h3>So'ngi yangiliklar</h3>
+        {% for news in songi_yangilik %}
+          <div class="side-card">
+            <div class="side-img">
+              <a href="#">
+                {% if news.image %}
+                  <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                {% else %}
+                  <img src="/media/news_images/img.png" alt="default">
+                {% endif %}
+              </a>
+            </div>
+            <div class="side-text">
+              <br><a href="#"><h4>{{ news.title|truncatewords:6}}</h4></a><br>
+              <p>{{ news.category }} | {{ news.published|date:"H:i" }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </aside>
+
+</div>
+{% endblock %}

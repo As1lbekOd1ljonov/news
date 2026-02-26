@@ -1,0 +1,48 @@
+{% extends 'base_profil.html' %}
+
+{% block content %}
+<main class="content">
+  <div class="edit-profile-wrapper">
+
+    <div class="form-container">
+      <h2>✏️ Profilni tahrirlash</h2>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" name="username" value="{{ user.username }}">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" value="{{ user.email }}">
+        </div>
+
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" name="first_name" value="{{ user.first_name }}">
+        </div>
+
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" name="last_name" value="{{ user.last_name }}">
+        </div>
+
+        <div class="form-group">
+          <label>Avatar</label>
+          <input type="file" name="avatar">
+          {% if user.avatar %}
+            <img src="{{ user.avatar.url }}">
+          {% endif %}
+        </div>
+
+        <button type="submit">💾 Saqlash</button>
+        <a href="{% url 'profile' %}" class="cancel-btn">Bekor qilish</a>
+      </form>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

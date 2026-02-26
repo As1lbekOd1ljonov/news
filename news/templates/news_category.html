@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<main>
+  <div class="container">
+    <h3>Kategoriya: {{ category_news.category }}</h3>
+    <div class="category-grid">
+
+      <!-- MAIN NEWS CARDS -->
+      <div class="news-list">
+        {% for news in category_news %}
+          <div class="news-card">
+            <div class="news-img">
+              <a href="{% url 'news_detail' news.id %}">
+              {% if news.image %}
+                  <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                {% else %}
+                  <img src="/media/news_images/img.png" alt="default">
+                {% endif %}
+                </a>
+            </div>
+            <div class="news-text">
+              <a href="{% url 'news_detail' news.id %}"><h2>{{ news.title }}</h2></a><br>
+              <h5>{{ news.description|truncatewords:20 }}</h5>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <h3>So'ngi yangiliklar</h3>
+        {% for news in songi_yangilik %}
+          <div class="side-card">
+            <div class="side-img">
+              <a href="{% url 'news_detail' news.id %}">
+                {% if news.image %}
+                  <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                {% else %}
+                  <img src="/media/news_images/img.png" alt="default">
+                {% endif %}
+              </a>
+            </div>
+            <div class="side-text">
+              <br><a href="{% url 'news_detail' news.id %}"><h4>{{ news.title|truncatewords:6}}</h4></a><br>
+              <p>{{ news.category }} | {{ news.published|date:"H:i" }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<style>
+/* MAIN GRID */
+.category-grid {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; /* tepa tekisligi */
+  flex-wrap: wrap;
+}
+
+/* ASOSIY YANGILIKLAR */
+.news-list {
+  flex: 1 1 65%;
+  min-width: 300px;
+}
+
+/* NEWS CARD */
+.news-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.news-img img {
+  width: 100%;
+  height: auto;
+}
+
+.news-text {
+  padding: 15px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  flex: 1 1 30%;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* SIDEBAR TITLE */
+.sidebar h3 {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+/* SIDE CARD */
+.side-card {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.side-img img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.side-text h5 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.side-text p {
+  font-size: 12px;
+  color: #777;
+}
+</style>
+
+
+{% endblock %}

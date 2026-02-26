@@ -1,0 +1,110 @@
+<nav class="navbar-container">
+  <!-- Top bar -->
+  <div class="navbar-top">
+
+    <!-- Logo -->
+    <div class="logo">
+      <a href="{% url 'home' %}">
+        <svg width="140" height="40" viewBox="0 0 140 40">
+          <rect x="0" y="0" width="60" height="40" rx="10" fill="#0d47a1"/>
+          <text x="29" y="23" text-anchor="middle" font-size="15" fill="white" font-weight="500">Uz</text>
+          <text x="65" y="28" font-size="17" fill="#0d47a1" font-weight="800">News</text>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Search -->
+<form method="GET" action="{% url 'news-search' %}" style="display: flex; justify-content: center;">
+    <input type="text" name="q" placeholder="Search news..." value="{{ request.GET.q }}"
+           style="padding: 10px; width: 70%; border: 1px solid #ccc; border-radius: 6px 0 0 6px; outline: none;">
+    <button type="submit"
+            style="padding: 10px 15px; border:none; background:#0d47a1; color:#fff; border-radius:0 6px 6px 0; cursor:pointer;">
+        Search
+    </button>
+</form>
+
+
+    <!-- User / Auth area -->
+    <div class="user-area">
+  {% if user.is_authenticated %}
+  <div class="user-menu">
+
+    <!-- AVATAR BUTTON -->
+    {% if user.avatar %}
+      <img src="{{ user.avatar.url }}" class="avatar-small" id="avatarBtn">
+    {% else %}
+      <img src="/media/avatars/avatar.png" class="avatar-small" id="avatarBtn">
+    {% endif %}
+
+    <!-- DROPDOWN -->
+    <div class="logout-dropdown" id="userDropdown">
+      <span class="dropdown-close" id="closeDropdown">&times;</span>
+
+      <div class="user-info">
+        {% if user.avatar %}
+          <img src="{{ user.avatar.url }}" class="avatar-small">
+        {% else %}
+          <img src="/media/avatars/avatar.png" class="avatar-small">
+        {% endif %}
+        <span>{{ user.username }}</span>
+      </div>
+
+      <a class="menu-item" href="{% url 'profile' %}">Profil</a>
+
+      <form id="logout-form" action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+      </form>
+
+      <a href="#" class="menu-item logout"
+         onclick="document.getElementById('logout-form').submit(); return false;">
+        Logout
+      </a>
+    </div>
+
+  </div>
+  {% else %}
+    <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+    <a class="btn btn-outline-primary" href="{% url 'register' %}">Sign up</a>
+  {% endif %}
+</div>
+
+
+  </div>
+
+  <!-- Bottom / categories -->
+  <div class="navbar-bottom">
+    <ul class="category-list">
+      {% for i in category_list %}
+      <li><a href="{% url 'category_news' i.pk %}">{{ i.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</nav>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const avatar = document.getElementById('avatarBtn');
+  const dropdown = document.getElementById('userDropdown');
+  const closeBtn = document.getElementById('closeDropdown');
+
+  avatar.onclick = function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+  };
+
+  closeBtn.onclick = function(e) {
+    e.stopPropagation();
+    dropdown.classList.remove('show');
+  };
+
+  // Tashqariga bosilganda ham yopish (ixtiyoriy)
+  document.addEventListener('click', function() {
+    dropdown.classList.remove('show');
+  });
+  dropdown.addEventListener('click', function(e) {
+    e.stopPropagation(); // dropdown ichidagi bosish yopmasin
+  });
+});
+</script>

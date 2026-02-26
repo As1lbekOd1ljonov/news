@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<h1>💾 Yoqqan xabarlarim</h1><br>
+
+<div class="row row-cols-1 row-cols-md-4 g-4" id="news-container">
+{% for news in saved_news %}
+<div class="col-xl-4 col-lg-4 col-md-6" id="news-card-{{ news.id }}">
+    <div class="news-card" id="news-card-{{ news.id }}">
+    <!-- IMAGE -->
+    <div class="news-image">
+        <a href="{% url 'news_detail' news.id %}">
+            {% if news.image %}
+                <img src="{{ news.image.url }}" alt="{{ news.title }}">
+            {% else %}
+                <img src="/media/news_images/img.png" alt="default">
+            {% endif %}
+        </a>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="news-content">
+        <a href="{% url 'news_detail' news.id %}">
+            <h5>{{ news.title }}</h5>
+        </a>
+        <p>{{ news.description|truncatewords:28 }}</p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="news-footer">
+        <span class="views">👁 {{ news.view }}</span>
+
+        {% if user.is_authenticated %}
+            <!-- LIKE -->
+            <span
+                class="like-btn {% if news.id in liked_posts %}liked{% endif %}"
+                data-id="{{ news.id }}"
+                style="cursor:pointer;"
+            >
+                ❤️ <span class="like-count">{{ news.like_count }}</span>
+            </span>
+
+            <!-- SAVE -->
+            <span
+                class="save-btn {% if news.id in saved_posts %}saved{% endif %}"
+                data-id="{{ news.id }}"
+                style="cursor:pointer;"
+            >
+                <span class="save-text">
+                    {% if news.id in saved_posts %}💾 Save{% else %}❌ Unsave{% endif %}
+                </span>
+            </span>
+
+        {% else %}
+            <a href="{% url 'login' %}">❤️ {{ news.like_count }}</a>
+            <a href="{% url 'login' %}" class="btn-login">💾 Save</a>
+        {% endif %}
+    </div>
+
+    <div id="msg-{{ news.id }}" class="like-save-msg" style="display:none;color:red;"></div>
+</div>
+
+</div>
+{% empty %}
+<p>Siz hali hech narsa saqlamagansiz 🙂</p>
+{% endfor %}
+</div>
+
+<script>
+function getCSRF() {
+    return document.querySelector('meta[name="csrf-token"]').content;
+}
+
+function showMessage(id, text) {
+    const msg = document.getElementById(`msg-${id}`);
+    if (!msg) return;
+    msg.innerText = text;
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display = "none", 2000);
+}
+
+/* LIKE tugmasi */
+document.querySelectorAll('.like-btn').forEach(el => {
+    el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        fetch(`/like/${id}/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCSRF() },
+            credentials: "same-origin"
+        })
+        .then(res => res.json())
+        .then(data => {
+            el.classList.toggle('liked', data.liked);
+            const countEl = el.querySelector('.like-count');
+            if (countEl) countEl.innerText = data.count;
+        })
+        .catch(() => showMessage(id, "Like bosish uchun login qiling!"));
+    });
+});
+
+/* SAVE / UNSAVE tugmasi */
+document.querySelectorAll('.save-btn').forEach(el => {
+    el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        fetch(`/save/${id}/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": getCSRF() },
+            credentials: "same-origin"
+        })
+        .then(res => res.json())
+        .then(data => {
+            const textEl = el.querySelector('.save-text');
+            if (data.save) {
+                el.classList.add('saved');
+                if (textEl) textEl.innerText = "❌ Unsave";
+            } else {
+                el.classList.remove('saved');
+                if (textEl) textEl.innerText = "💾 Save";
+
+                // Agar saved page bo‘lsa card’ni olib tashlash
+                const card = document.getElementById(`news-card-${id}`);
+                if (card) {
+                    card.style.transition = "0.3s";
+                    card.style.opacity = "0";
+                    setTimeout(() => card.remove(), 300);
+                }
+            }
+        })
+        .catch(() => showMessage(id, "Save qilish uchun login qiling!"));
+    });
+});
+</script>
+
+
+<style>
+
+</style>
+
+{% endblock %}

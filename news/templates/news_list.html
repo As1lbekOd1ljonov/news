@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+  <div class="container">
+    <div class="main-grid">
+
+      <!-- LEFT CONTENT -->
+      <div class="content-left">
+
+        <!-- TOP NEWS -->
+        {% for news in popular_news %}
+          {% if forloop.first %}
+            <div class="top-news">
+              <div class="top-image">
+                <a href="{% url 'news_detail' news.id %}">
+                {% if news.image %}
+                  <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                {% else %}
+                  <img src="/media/news_images/img.png" alt="default">
+                {% endif %}
+                  </a>
+              </div>
+              <div class="top-text">
+                <a href="{% url 'news_detail' news.id %}">
+                <br><h1>{{ news.title }}</h1><br>
+                  </a>
+                <p>{{ news.description|truncatewords:30 }}</p>
+              </div>
+            </div>
+
+            <!-- MEDIUM NEWS GRID -->
+            <div class="news-grid">
+
+          {% else %}
+            <div class="news-card">
+              <div class="news-img">
+                <a href="{% url 'news_detail' news.id %}">
+                  {% if news.image %}
+                    <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                  {% else %}
+                    <img src="/media/news_images/img.png" alt="default">
+                  {% endif %}
+                </a>
+              </div>
+              <div class="news-text">
+                <p>{{ news.category }}</p><br>
+                <a href="{% url 'news_detail' news.id %}">
+                  <h3>{{ news.title }}</h3>
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+
+
+
+
+        <div class="news-list-grid">
+
+  <!-- Chap: barcha yangiliklar -->
+<div class="news-list" id="news-list">
+  {% for news in news_list %}
+    <div class="news-card {% if forloop.counter > 5 %}hidden-news{% endif %}">
+      <div class="news-img">
+        <a href="{% url 'news_detail' news.id %}">
+                        {% if news.image %}
+                  <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                {% else %}
+                  <img src="/media/news_images/img.png" alt="default">
+                {% endif %}
+          </a>
+      </div>
+      <div class="news-text">
+        <a href="{% url 'news_detail' news.id %}"><h3>{{ news.title }}</h3></a><br>
+        <p>{{ news.description|truncatewords:20 }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+  <!-- O‘ng: dolzarb xabarlar -->
+  <div class="urgent-news">
+  <h4>Dolzarb xabarlar</h4>
+
+  <div class="urgent-cards">
+    {% for news in dolzarb_xabarlar %}
+      <a href="{% url 'news_detail' news.id %}" class="urgent-card">
+        {{ news.title }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Yana o‘qish tugmasi -->
+<div class="load-more-container">
+  <button id="load-more-btn">
+    Ko'proq yangiliklar <span class="arrow">&#x279C;</span>
+  </button>
+</div>
+
+
+
+
+</div>
+      </div>
+
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+  <h3>So'ngi  yangiliklar</h3>
+  {% for news in songi_yangilik %}
+    <div class="side-card">
+      <div class="side-img">
+        <a href="{% url 'news_detail' news.id %}">
+          {% if news.image %}
+            <img src="{{ news.image.url }}" alt="{{ news.title }}">
+          {% else %}
+            <img src="/media/news_images/img.png" alt="default">
+          {% endif %}
+        </a>
+      </div>
+      <div class="side-text">
+        <a href="{% url 'news_detail' news.id %}">
+          <h5>{{ news.title}}</h5>
+        </a><br>
+        <p>{{ news.category }} | {{ news.published|date:"H:i" }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</aside>
+
+
+    </div>
+  </div>
+</main>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const loadBtn = document.getElementById('load-more-btn');
+  const hiddenNews = Array.from(document.querySelectorAll('.hidden-news'));
+  let visibleCount = 0;
+  const increment = 4;
+
+  loadBtn.addEventListener('click', () => {
+    // Slice bilan keyingi 4 ta yangilikni olish
+    const nextItems = hiddenNews.slice(visibleCount, visibleCount + increment);
+
+    nextItems.forEach(item => {
+      item.style.display = 'flex';
+      item.classList.remove('hidden-news');
+    });
+
+    visibleCount += nextItems.length;
+
+    // Agar qolgan yangiliklar bo‘lmasa, tugmani yashirish
+    if (visibleCount >= hiddenNews.length) {
+      loadBtn.style.display = 'none';
+    }
+  });
+});
+</script>
+
+
+
+{% endblock %}

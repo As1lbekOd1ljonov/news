@@ -1,0 +1,133 @@
+<script>
+document.querySelectorAll(".like-btn").forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        let id = this.getAttribute("data-id");
+
+        fetch(`/like/${id}/`)
+            .then(res => res.json())
+            .then(data => {
+
+                // Login kerak bo‘lsa -> avtomatik login sahifasiga yo‘naltiradi
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+
+                // Like sonini yangilaymiz
+                document.getElementById(`like-count-${id}`).innerText = data.count;
+
+                // Ico'n rangini o‘zgartiramiz
+                if (data.liked) {
+                    this.style.color = "red";
+                } else {
+                    this.style.color = "black";
+                }
+            });
+    });
+
+});
+</script>
+
+
+<script>
+function getCSRF() {
+    return document.querySelector('meta[name="csrf-token"]').content;
+}
+
+function showMessage(id, text) {
+    const msg = document.getElementById(`msg-${id}`);
+    if (!msg) return;
+    msg.innerText = text;
+    msg.style.display = "block";
+    setTimeout(() => { msg.style.display = "none"; }, 2000);
+}
+
+/* LIKE */
+function toggleLike(el) {
+    const id = el.dataset.id;
+    if (!id) return;
+
+    fetch(`/like/${id}/`, {
+        method: "POST",
+        headers: { "X-CSRFToken": getCSRF() },
+        credentials: "same-origin"
+    })
+    .then(res => {
+        if (res.status === 401 || res.status === 403) throw new Error("login-required");
+        return res.json();
+    })
+    .then(data => {
+        const count = document.getElementById(`like-count-${id}`);
+        if (count) count.innerText = data.count;
+        el.classList.toggle("liked", data.liked);
+    })
+    .catch(err => {
+        if (err.message === "login-required") showMessage(id, "Like bosish uchun login qiling!");
+        else console.error(err);
+    });
+}
+
+/* SAVE */
+function toggleSave(el) {
+    const id = el.dataset.id;
+    if (!id) return;
+
+    const isSavedPage = document.body.classList.contains("saved-page");
+
+    fetch(`/save/${id}/`, {
+        method: "POST",
+        headers: { "X-CSRFToken": getCSRF() },
+        credentials: "same-origin"
+    })
+    .then(res => {
+        if (res.status === 401 || res.status === 403) throw new Error("login-required");
+        return res.json();
+    })
+    .then(data => {
+        const textEl = el.querySelector(".save-text");
+
+        if (data.save) {
+            el.classList.add("saved");
+            if (textEl) textEl.innerText = "❌ Unsave";
+        } else {
+            el.classList.remove("saved");
+            if (textEl) textEl.innerText = "💾 Save";
+
+            if (isSavedPage) {
+                const card = document.getElementById(`news-card-${id}`);
+                if (card) {
+                    card.style.transition = "0.3s";
+                    card.style.opacity = "0";
+                    setTimeout(() => card.remove(), 300);
+                }
+
+                if (!document.querySelector(".news-card")) {
+                    const container = document.getElementById("news-container");
+                    if (container) container.innerHTML = "<p>Siz hali hech narsa saqlamagansiz 🙂</p>";
+                }
+            }
+        }
+    })
+    .catch(err => {
+        if (err.message === "login-required") showMessage(id, "Save qilish uchun login qiling!");
+        else console.error(err);
+    });
+}
+
+/* AUTO INIT */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.like-btn').forEach(el => el.addEventListener('click', () => toggleLike(el)));
+    document.querySelectorAll('.save-btn').forEach(el => el.addEventListener('click', () => toggleSave(el)));
+});
+</script>
+
+
+
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/9.3.0/mdb.umd.min.js"
+></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+

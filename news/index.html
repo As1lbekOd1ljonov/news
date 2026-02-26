@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>News Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: #f4f5f7;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  color: #003366;
+}
+
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #111;
+  font-size: 14px;
+}
+
+.search input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1; /* footer pastga tushadi */
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: calc(100% - 400px); /* ekran chetidan 400px */
+  margin: 25px auto;
+}
+
+/* ===== GRID ===== */
+.main-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 25px;
+}
+
+/* ===== TOP NEWS ===== */
+.top-news {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr;
+  gap: 20px;
+  background: #fff;
+  padding: 20px;
+}
+
+.top-text h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.top-text p {
+  color: #444;
+  line-height: 1.5;
+}
+
+.top-image {
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+/* ===== NEWS LIST ===== */
+.news-list {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.news-item {
+  background: #fff;
+  padding: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.news-img {
+  width: 120px;
+  height: 80px;
+  background: #ddd;
+}
+
+.news-text h3 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.news-text p {
+  font-size: 13px;
+  color: #555;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: #fff;
+  padding: 15px;
+}
+
+.sidebar h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.side-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.side-img {
+  width: 60px;
+  height: 60px;
+  background: #ddd;
+}
+
+.side-item p {
+  font-size: 13px;
+}
+
+/* ===== BOTTOM NEWS ===== */
+.bottom-news {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.bottom-item {
+  background: #fff;
+  padding: 12px;
+}
+
+.bottom-img {
+  height: 120px;
+  background: #ddd;
+  margin-bottom: 8px;
+}
+
+.bottom-item h4 {
+  font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+  .top-news {
+    grid-template-columns: 1fr;
+  }
+  .news-list {
+    grid-template-columns: 1fr;
+  }
+  .bottom-news {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="navbar">
+  <div class="logo">NewsPortal</div>
+  <div class="menu">
+    <a href="#">Jamiyat</a>
+    <a href="#">Siyosat</a>
+    <a href="#">Dunyo</a>
+    <a href="#">Sport</a>
+  </div>
+  <div class="search">
+    <input type="text" placeholder="Qidirish">
+  </div>
+</div>
+
+<main>
+  <div class="container">
+  <div class="main-grid">
+
+    <!-- CONTENT -->
+    <div>
+
+      <!-- TOP NEWS -->
+      <div class="top-news">
+        <div class="top-text">
+          <h1>Asosiy yangilik sarlavhasi</h1>
+          <p>Eng muhim va dolzarb yangilik haqida qisqa va aniq matn.</p>
+        </div>
+        <div class="top-image">Rasm</div>
+      </div>
+
+      <!-- MEDIUM NEWS -->
+      <div class="news-list">
+        <!-- item -->
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Yangilik sarlavhasi 1</h3>
+            <p>Qisqacha tavsif...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Yangilik sarlavhasi 2</h3>
+            <p>Qisqacha tavsif...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Yangilik sarlavhasi 3</h3>
+            <p>Qisqacha tavsif...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Yangilik sarlavhasi 4</h3>
+            <p>Qisqacha tavsif...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANY NEWS (LIST) -->
+      <div class="news-list" style="grid-template-columns:1fr; margin-top:30px;">
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Ko‘proq yangilik sarlavhasi</h3>
+            <p>Qisqacha ma’lumot...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Ko‘proq yangilik sarlavhasi</h3>
+            <p>Qisqacha ma’lumot...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Ko‘proq yangilik sarlavhasi</h3>
+            <p>Qisqacha ma’lumot...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Ko‘proq yangilik sarlavhasi</h3>
+            <p>Qisqacha ma’lumot...</p>
+          </div>
+        </div>
+
+        <div class="news-item">
+          <div class="news-img"></div>
+          <div class="news-text">
+            <h3>Ko‘proq yangilik sarlavhasi</h3>
+            <p>Qisqacha ma’lumot...</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <h3>So‘nggi yangiliklar</h3>
+
+      <div class="side-item">
+        <div class="side-img"></div>
+        <p>So‘nggi yangilik</p>
+      </div>
+      <div class="side-item">
+        <div class="side-img"></div>
+        <p>So‘nggi yangilik</p>
+      </div>
+      <div class="side-item">
+        <div class="side-img"></div>
+        <p>So‘nggi yangilik</p>
+      </div>
+      <div class="side-item">
+        <div class="side-img"></div>
+        <p>So‘nggi yangilik</p>
+      </div>
+      <div class="side-item">
+        <div class="side-img"></div>
+        <p>So‘nggi yangilik</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<footer>
+  © 2026 NewsPortal — Barcha huquqlar himoyalangan
+</footer>
+
+</body>
+</html>
+
+
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView, LogoutView
+from django.db.models import Count, Q
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
+
+from .mixins import SongiYangilikMixin, NewsListMixin
+from .models import News, CategoryNews, Like, SavedNews
+
+User = get_user_model()
+
+
+
+class ToggleLikeView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        news = get_object_or_404(News, pk=pk)
+
+        like_obj, created = Like.objects.get_or_create(
+            user=request.user,
+            news=news
+        )
+
+        if not created:
+            like_obj.delete()
+            liked = False
+        else:
+            liked = True
+
+        return JsonResponse({
+            "liked": liked,
+            "count": news.likes.count()
+        })
+
+
+class ToggleSaveView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        news = get_object_or_404(News, pk=pk)
+
+        obj, created = SavedNews.objects.get_or_create(user=request.user, news=news)
+
+        if not created:
+            obj.delete()
+            saved = False
+
+        else:
+            saved = True
+
+        return JsonResponse({'save':saved})
+
+
+class SavedNewsListView(LoginRequiredMixin, ListView):
+    model = News
+    template_name = "saved_news.html"
+    context_object_name = "saved_news"
+
+    def get_queryset(self):
+        return News.objects.filter(saved_by__user=self.request.user).order_by("-published")
+
+
+
+class CategoryNewsListView(SongiYangilikMixin, ListView):
+    model = News
+    template_name = 'news_category.html'
+    context_object_name = 'category_news'
+
+    def get_queryset(self):
+        return News.objects.filter(category_id=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['liked_posts'] = set(
+                Like.objects.filter(user=self.request.user).values_list('news_id', flat=True)
+            )
+        else:
+            context['liked_posts'] = set()
+        return context
+
+
+
+class NewsListView(NewsListMixin, ListView):
+    model = News
+    template_name = 'news_list.html'
+    context_object_name = 'news_list'
+
+    def get_queryset(self):
+        featured_ids = News.objects.filter(
+            is_featured=True
+        ).values_list('id', flat=True)
+
+        latest_news = (
+            News.objects
+            .exclude(id__in=featured_ids)
+            .order_by('-published')[:11]
+        )
+
+        latest_ids = latest_news.values_list('id', flat=True)
+
+        return (
+            News.objects
+            .exclude(id__in=featured_ids)
+            .exclude(id__in=latest_ids)
+            .order_by('-published')
+        )
+
+
+
+class NewsDetailView(SongiYangilikMixin, DetailView):
+    model = News
+    template_name = 'news_detail.html'
+    context_object_name = 'news_detail'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.view += 1
+        obj.save()
+        return obj
+
+
+
+class RegisterView(CreateView):
+    model = User
+    fields = ['username', 'email', 'first_name', 'last_name', 'password', 'avatar']
+    template_name = 'register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])
+        user.save()
+        return super().form_valid(form)
+
+
+class Login(LoginView):
+    template_name = 'login.html'
+    redirect_authenticated_user = True
+    def get_success_url(self):
+        return self.get_redirect_url() or reverse_lazy('home')
+
+
+class Logout(LogoutView):
+    next_page = reverse_lazy('home')
+
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'profil.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_staff:
+            context['news_list'] = News.objects.all().order_by('-published')
+            context['categories'] = CategoryNews.objects.all().order_by('-id')
+        else:
+            context['news_list'] = None
+
+        return context
+
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ['username', 'email', 'first_name', 'last_name', 'avatar']
+    template_name = 'profile_update.html'
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+
+
+class NewsCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = News
+    fields = ['title', 'description', 'image', 'category', 'is_featured']
+    template_name = 'news_create.html'
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+
+class NewsUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = News
+    fields = ['title', 'description', 'image', 'category', 'is_featured']
+    template_name = 'news_create.html'
+    success_url = reverse_lazy('profile')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class NewsDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = News
+    template_name = 'news_delete.html'
+    success_url = reverse_lazy('profile')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = CategoryNews
+    fields = ['title']
+    template_name = 'category_create.html'
+    success_url = reverse_lazy('profile')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = CategoryNews
+    fields = ['title']
+    template_name = 'category_create.html'
+    success_url = reverse_lazy('profile')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = CategoryNews
+    template_name = 'category_delete.html'
+    success_url = reverse_lazy('profile')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class NewsSearchView(SongiYangilikMixin, ListView):
+    model = News
+    template_name = 'search.html'
+    context_object_name = 'news_list'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return News.objects.filter(
+                Q(title__icontains=query) | Q(description__icontains=query)
+            ).order_by('-published')
+        else:
+            return News.objects.none()

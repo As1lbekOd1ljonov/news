@@ -1,0 +1,87 @@
+{% extends 'base_profil.html' %}
+
+{% block content %}
+<main class="content">
+
+  <div class="edit-profile-wrapper">
+    <div class="form-container">
+      <h2>Create News</h2>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+          {{ form.title.label_tag }}
+          {{ form.title }}
+        </div>
+
+        <div class="form-group">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+        </div>
+
+        <div class="form-group">
+          {{ form.image.label_tag }}
+          {{ form.image }}
+        </div>
+
+        <div class="form-group">
+          {{ form.category.label_tag }}
+          {{ form.category }}
+        </div>
+
+        <div class="form-group">
+          {{ form.is_featured.label_tag }}
+          {{ form.is_featured }}
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Create News</button>
+          <a href="{% url 'profile' %}" class="btn-cancel">Cancel</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</main>
+
+<style>
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  margin-top:20px;
+}
+
+.btn-save{
+  background:#2563eb;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:8px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn-save:hover{
+  background:#1d4ed8;
+}
+
+.btn-cancel{
+  background:#e5e7eb;
+  color:#111827;
+  padding:10px 20px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn-cancel:hover{
+  background:#d1d5db;
+}
+</style>
+{% endblock %}

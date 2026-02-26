@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+  <div class="container" style="max-width:1200px; margin:50px auto; padding:0 20px; display:flex; gap:30px; flex-wrap:wrap;">
+
+    <!-- MAIN NEWS CARD (chap / markaz) -->
+    <div style="flex:3; min-width:300px;">
+      <div class="news-card-detail" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); overflow:hidden; margin-bottom:20px;">
+
+        <div style="padding:20px; display:flex; flex-direction:column; gap:15px;">
+          <h1 style="margin:0; color:#0d47a1;">{{ news_detail.title }}</h1>
+
+          <!-- Rasm -->
+          {% if news_detail.image %}
+            <img src="{{ news_detail.image.url }}" alt="{{ news_detail.title }}" style="width:100%; height:350px; object-fit:cover; border-radius:8px;">
+          {% endif %}
+
+          <!-- Matn -->
+          <div style="font-size:14px; color:#888;">
+            <span>Category: {{ news_detail.category }}</span> |
+            <span>Published: {{ news_detail.published|date:"d M Y H:i" }}</span>
+          </div>
+
+          <p style="color:#555; line-height:1.6; font-size:16px;">
+            {{ news_detail.description }}
+          </p>
+
+          <div style="font-size:12px; color:#777;">
+            Views: {{ news_detail.view }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR (o'ngda) -->
+    <aside class="sidebar" style="flex:1; min-width:250px;">
+      <h3 style="border-bottom:2px solid #ddd; padding-bottom:8px; margin-bottom:15px;">So'ngi yangiliklar</h3>
+      {% for news in songi_yangilik %}
+      <div class="side-card" style="display:flex; margin-bottom:15px;">
+        <div class="side-img">
+          <a href="{% url 'news_detail' news.id %}">
+            {% if news.image %}
+              <img src="{{ news.image.url }}" alt="{{ news.title }}" style="width:80px; height:80px; object-fit:cover; border-radius:8px; margin-right:10px;">
+            {% else %}
+              <img src="/media/news_images/img.png" alt="default" style="width:80px; height:80px; object-fit:cover; border-radius:8px; margin-right:10px;">
+            {% endif %}
+          </a>
+        </div>
+        <div class="side-text">
+          <a href="{% url 'news_detail' news.id %}" style="text-decoration:none; color:#0d47a1;">
+            <h4 style="margin:0; font-size:16px;">{{ news.title|truncatewords:6}}</h4>
+          </a>
+          <p style="font-size:12px; color:#777; margin:3px 0 0 0;">{{ news.category }} | {{ news.published|date:"H:i d M Y" }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </aside>
+
+  </div>
+</main>
+{% endblock %}

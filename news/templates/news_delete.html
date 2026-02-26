@@ -1,0 +1,19 @@
+{% extends 'base_profil.html' %}
+
+{% block content %}
+<div class="delete-box">
+  <h2>🗑 Newsni o‘chirish</h2>
+
+  <p>
+    Siz rostdan ham
+    <strong>{{ object.title }}</strong>
+    newsini o‘chirmoqchimisiz?
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="danger">Ha, o‘chirish</button>
+    <a href="{% url 'profile' %}" class="cancel-btn">Bekor qilish</a>
+  </form>
+</div>
+{% endblock %}
